@@ -153,10 +153,10 @@
             productName.className = 'layui-card-header katou';
             productName.innerText = product.productName;
             productCard.appendChild(productName);
-
             const productImg = document.createElement('img');
             productImg.className = 'productImg';
             productImg.src = "/images/product/"+product.imageName;
+            productImg.alt = '商品图片';
             productCard.appendChild(productImg);
 
             const productPrice = document.createElement('div');

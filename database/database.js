@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 require('dotenv').config(); 
-const mongoDB = process.env.MONGO_URI;
+const mongoDB = process.env.MONGO_URI ||'mongodb://localhost:27017/test';
 mongoose.connect(mongoDB, { serverApi: { version: '1', strict: true, deprecationErrors: true } });
 
 const db = mongoose.connection;

@@ -9,6 +9,10 @@ function fileMiddleware(req,res,next){
     const passPath=["/login","/signup"]
     if(passPath.includes(path) || path.startsWith("/images") || path.startsWith("/layer") ){
         next();
+        if (path == "/images/back.jpg"){
+            // 配置缓存
+            res.set('Cache-Control', 'public, max-age=86400'); // 缓存一天
+        }
         return;
     }
     try {
