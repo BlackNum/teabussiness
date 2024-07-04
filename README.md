@@ -15,12 +15,12 @@
 可参考以下命令
 ```bash
 docker run -d
---name teabusiness_app
--p 8000:3000
--e ADMIN_SECRET=admin
--e ROOT_SECRET=root
--e SECRET_KEY=secret
--e MONGO_URI=mongodb://127.0.0.1:27017/
+--name teabusiness_app \
+-p 8000:3000 \
+-e ADMIN_SECRET=admin \
+-e ROOT_SECRET=root \
+-e SECRET_KEY=secret \
+-e MONGO_URI=mongodb://127.0.0.1:27017/ \
 deckforme/teabussiness
 ```
 
