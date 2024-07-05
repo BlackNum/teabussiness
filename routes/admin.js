@@ -24,15 +24,15 @@ router.get('/alluser', async (req, res) => {
   });
 
   // 删除所有，debug
-router.get('/deleteall', async (req, res) => {
-    try {
-      await User.deleteMany({});
-      res.send({success:true,msg:"删除成功"});
+// router.get('/deleteall', async (req, res) => {
+//     try {
+//       await User.deleteMany({});
+//       res.send({success:true,msg:"删除成功"});
       
-    } catch (err) {
-      res.status(500).send(err);
-    }
-  });
+//     } catch (err) {
+//       res.status(500).send(err);
+//     }
+//   });
 
 router.get("/deleteuser/:id",async(req,res)=>{
     try {
@@ -133,7 +133,7 @@ router.get('/clearImage',async(req,res)=>{
         //获取文件列表中不存在的文件
         //遍历文件列表，删除文件
         fileList.forEach(fileName=>{
-          if (!fileNameList.includes(fileName)){
+          if (!fileNameList.includes(fileName) && fileName!="1.txt"){
             fs.unlinkSync(path.join(__dirname, '../web/images/product/',fileName));
             delFileConutt++;
           }
