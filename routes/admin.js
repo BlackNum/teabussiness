@@ -99,7 +99,7 @@ router.get('/deleteproduct/:id',async(req,res)=>{
         try{
             fs.unlinkSync(path.join(__dirname, '../web/images/product/',product.imageName));
         }catch(err){
-            console.log(err);
+            console.log("原始图片丢失");
         }
         await Product.deleteOne({_id:req.params.id})
         res.status(200).send({success:true,data:"删除成功"});
