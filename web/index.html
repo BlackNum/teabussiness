@@ -49,22 +49,28 @@
             width: 20%;           
         }
         .container {
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
-}
-    .katou{
-        /* 文本溢出 底部滑动栏 */
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
-    .productCard{
-        background-color: #fff;
-        border-radius: 10px;
-        width: 250px;
-        height: 270px;
-    }
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin: -10px; 
+        }
+
+        .container > * {
+            flex: 1 1 250px; 
+            margin: 10px;
+        }
+        .katou{
+            /* 文本溢出 底部滑动栏 */
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .productCard{
+            background-color: #fff;
+            border-radius: 10px;
+            width: 250px;
+            height: 270px;
+        }
 
 
 </style>
