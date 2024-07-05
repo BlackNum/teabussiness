@@ -16,7 +16,7 @@ const secretKey = process.env.SECRET_KEY ||'secret';
 const rootSecret=process.env.ROOT_SECRET || "root";
 const adminSerct=process.env.ADMIN_SECRET || "admin";
 const email=process.env.MY_EMAIL || "goodLuck@you.day";
-const mongoDB = process.env.MONGO_URI ||'mongodb://localhost:27017/';
+const mongoDB = process.env.MONGO_URI ||'mongodb://localhost:27017/teabussiness';
 
 
 
