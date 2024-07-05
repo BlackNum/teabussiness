@@ -12,7 +12,7 @@ router.post('/signup', async (req, res) => {
     isAdmin=false;
     if (req.body.adminSerct){ 
         if(req.body.adminSerct != adminSerct ){
-        res.send({suuess:false,msg:"adminSerct error"})
+        res.send({suuess:false,error:"adminSerct error"})
         return;
         }
         isAdmin=true;
