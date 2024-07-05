@@ -15,6 +15,7 @@ const PORT = process.env.PORT || 3000;
 const secretKey = process.env.SECRET_KEY ||'secret';
 const rootSecret=process.env.ROOT_SECRET || "root";
 const adminSerct=process.env.ADMIN_SECRET || "admin";
+const mongoDB = process.env.MONGO_URI ||'mongodb://localhost:27017/';
 
 
 
@@ -23,6 +24,7 @@ app.listen(PORT, () => {
     console.log(`secretKey: ${secretKey}`);
     console.log(`rootSecret: ${rootSecret}`);
     console.log(`adminSerct: ${adminSerct}`);
+    console.log(`mongoDB: ${mongoDB}`);
 });
 
 module.exports = app;
