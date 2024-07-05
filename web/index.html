@@ -6,6 +6,39 @@
     <link href="/layer/css/layui.css" rel="stylesheet">
     <script src="/layer/layui.js"></script> 
 <style>
+.cart-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.product-name {
+    flex-grow: 1;  /* 使得名称可以占据多余空间 */
+    font-size: 16px;
+    color: #333;
+}
+
+.product-price {
+    font-size: 14px;
+    color: #666;
+    margin: 0 10px;
+}
+
+.product-quantity {
+    font-size: 14px;
+    color: #666;
+}
+
+/* 可以添加的额外样式，提高用户体验 */
+.cart-item:hover {
+    background-color: #f0f0f0;
+}
+
         body {
             font-family: '微软雅黑', sans-serif;
             /* background-color: #96d590; */
@@ -71,6 +104,67 @@
             width: 250px;
             height: 270px;
         }
+        #floating-cart {
+    position: fixed;
+    bottom: 40px; /* 位置上移 */
+    right: 20px;
+    z-index: 1000;
+}
+
+#cart-button {
+    background: linear-gradient(135deg, #4caf50, #81c784); /* 绿色渐变 */
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 15px 30px; /* 按钮尺寸增大 */
+    font-size: 18px; /* 字体大小增大 */
+    border-radius: 30px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    animation: bounce 1s;
+}
+
+#cart-button:hover {
+    background: linear-gradient(135deg, #81c784, #4caf50);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    transform: translateY(-2px);
+}
+
+#cart-button:active {
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transform: translateY(1px);
+}
+
+
+        #cart-content {
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            padding: 20px;
+            position: absolute;
+            bottom: 70px;
+            width: 300px;
+            right: 0;
+            border-radius: 10px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .visible {
+            display: block;
+        }
+        @keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-30px);
+  }
+  60% {
+    transform: translateY(-15px);
+  }
+}
 
 
 </style>
@@ -93,6 +187,11 @@
         </div>
     </div>
 </div>    
+<div id="floating-cart">
+    <button id="cart-button">购物车</button>
+    <div id="cart-content" class="hidden">
+    </div>
+</div>
 <script>
     var layer = layui.layer;
     fetch('/api/user/info', {
@@ -171,8 +270,7 @@
             productCard.appendChild(productPrice);
 
             if (product.isOnSale) {
-                productPrice.innerHTML += '<br>'+'<button type="button" class="layui-btn layui-btn-sm" lay-on="alert">购买</button>';
-                onSale++;
+                productPrice.innerHTML += '<br><button type="button" class="layui-btn layui-btn-sm" onclick="buyProduct(\'' + product._id + '\', \'' + product.productName + '\', ' + product.productPrice + ')">购买</button>';
             }
             else {
                 productPrice.innerHTML += '<br>'+'<button class="layui-btn layui-btn-sm layui-btn-disabled">已下架</button>';
@@ -188,27 +286,6 @@
   var util = layui.util;
   // 批量事件
   util.on('lay-on', {
-    alert: function(){
-        fetch('/api/user/email').then(res => res.json()).then(data=>{
-            if (data.success){
-                layer.alert('购买请联系邮箱:'+data.email,{icon: 6},function(){
-            // 剪贴板放置邮箱
-            navigator.clipboard.writeText(data.email).then(function() {
-                /* clipboard successfully set */
-                layer.msg('邮箱已复制到剪贴板,期待您的联系', {icon: 1});
-            }, function() {
-                /* clipboard write failed */
-                // layer.msg('邮箱复制失败', {icon: 2});
-                console.log('邮箱复制失败');
-            });
-    })
-            }
-            else{
-                layer.msg('获取邮件失败', {icon: 2});
-            }
-        })
-
-},
     confirm: function(){
       layer.confirm('您确定退出登录吗?', {
         btn: ['确定', '关闭'] //按钮
@@ -228,6 +305,101 @@
     }
 });}
     );
+function showEmalil(){
+    fetch('/api/user/email').then(res => res.json()).then(data=>{
+        if (data.success){
+            layer.alert('购买请联系邮箱:'+data.email,{icon: 6},function(){
+        // 剪贴板放置邮箱
+        navigator.clipboard.writeText(data.email).then(function() {
+            /* clipboard successfully set */
+            layer.msg('邮箱已复制到剪贴板,期待您的联系', {icon: 1});
+        }, function() {
+            /* clipboard write failed */
+            // layer.msg('邮箱复制失败', {icon: 2});
+            console.log('邮箱复制失败');
+        });
+})
+        }
+        else{
+            layer.msg('获取邮件失败', {icon: 2});
+        }
+    })
+
+}
+
+function buyProduct(id,name,price){
+    localStorage.getItem('cart') || localStorage.setItem('cart', JSON.stringify([]));
+    var cart = JSON.parse(localStorage.getItem('cart'));
+    var product = cart.find(item => item.id === id);
+    if (product) {
+        product.quantity++;
+    } else {
+        product = {
+            id: id,
+            name: name,
+            price: price,
+            quantity: 1
+        };
+        cart.push(product);
+    }
+    localStorage.setItem('cart', JSON.stringify(cart));
+    layer.msg('已为您添加到购物车', {icon: 1});
+    // 购物车动画
+    document.getElementById('cart-button').style.animation = 'none';
+    setTimeout(function() {
+        document.getElementById('cart-button').style.animation = 'bounce 1s';
+    }, 100);
+
+}
+
+function deleteProduct(id) {
+    var cart = JSON.parse(localStorage.getItem('cart'));
+    var index = cart.findIndex(item => item.id === id);
+    if (index!== -1) {
+        cart.splice(index, 1);
+        localStorage.setItem('cart', JSON.stringify(cart));
+        layer.msg('已从购物车删除', {icon: 1});
+        document.getElementById('cart-button').click();
+    }
+}
+</script>
+<script>
+    document.getElementById('cart-button').addEventListener('click', function() {
+    var cartContent = document.getElementById('cart-content');
+    if (cartContent.classList.contains('hidden')) {
+        cartContent.classList.remove('hidden');
+        cartContent.classList.add('visible');
+        if (!localStorage.getItem('cart') || localStorage.getItem('cart') === '[]'){
+            document.getElementById('cart-content').innerHTML = '购物车为空哦';
+        }
+        else{
+            var cart = JSON.parse(localStorage.getItem('cart'));
+            var cartContent = document.getElementById('cart-content');
+            cartContent.innerHTML = '';
+            cart.forEach(function(item) {
+                var cartItem = document.createElement('div');
+                cartItem.className = 'cart-item';
+                cartItem.innerHTML = '<span class="product-name">' + item.name + '</span><span class="product-price">单价' + item.price + '元</span><span class="product-quantity">共计' + item.quantity + '个</span>';
+                // 删除按钮
+                cartItem.innerHTML+='<button class="layui-btn layui-btn-sm layui-btn-danger" onclick="deleteProduct(\'' + item.id + '\');event.stopPropagation()" >删除</button>';
+                cartContent.appendChild(cartItem);
+            });
+            cartContent.innerHTML += '<button class="layui-btn layui-btn" onclick="showEmalil()" style="float: right; border-radius: 12px;">结算</button>';
+        }
+    } else {
+        cartContent.classList.remove('visible');
+        cartContent.classList.add('hidden');
+    }
+});
+
+// 点击购物车外部收回
+document.addEventListener('click', function(event) {
+    var cartContent = document.getElementById('cart-content');
+    if (event.target.id !== 'cart-button' && cartContent.classList.contains('visible')) {
+        cartContent.classList.remove('visible');
+        cartContent.classList.add('hidden');
+    }
+});
 
 </script>
 </body>
