@@ -3,15 +3,14 @@ const jwt = require('jsonwebtoken');
 // 密钥
 const secretKey = process.env.SECRET_KEY ||'secret';
 
-// 生成token
+
 function generateToken(id,username,is_admin) {
   return jwt.sign({ id: id, username: username,isAdmin:is_admin }, secretKey, { expiresIn: '1d' });
 }
 
-// 验证token
+
 function verifyToken(token) {
   try {
-    // Verify the token
     const decoded = jwt.verify(token, secretKey);
     return true;
   } catch (error) {
@@ -19,7 +18,7 @@ function verifyToken(token) {
   }
 }
 
-// 验证管理员token
+
 function verifyAdminToken(token) {
   try {
     const decoded = jwt.verify(token, secretKey);
@@ -35,7 +34,6 @@ function verifyAdminToken(token) {
 
 function getTokenInfo(token) {
   try {
-    // Verify the token
     const decoded = jwt.verify(token, secretKey);
     return decoded;
   } catch (error) {
