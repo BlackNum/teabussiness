@@ -96,7 +96,11 @@ router.get('/deleteproduct/:id',async(req,res)=>{
             return;
         }
         // 删除图片
-        fs.unlinkSync(path.join(__dirname, '../web/images/product/',product.imageName));
+        try{
+            fs.unlinkSync(path.join(__dirname, '../web/images/product/',product.imageName));
+        }catch(err){
+            console.log(err);
+        }
         await Product.deleteOne({_id:req.params.id})
         res.status(200).send({success:true,data:"删除成功"});
     } catch (err) {
@@ -134,10 +138,6 @@ router.get('/clearImage',async(req,res)=>{
             delFileConutt++;
           }
         })
-        if (delFileConutt==0){
-          res.status(200).send({success:true,data:{delFileConutt:delFileConutt}});
-          return;
-        }
         res.status(200).send({success:true,data:{delFileConutt:delFileConutt}});
     } catch (err) {
         res.status(500).send({success:false,error:err});
