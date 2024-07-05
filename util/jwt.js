@@ -1,5 +1,4 @@
 // jwt工具库
-const { get } = require('http');
 const jwt = require('jsonwebtoken');
 // 密钥
 const secretKey = process.env.SECRET_KEY ||'secret';
