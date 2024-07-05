@@ -3,12 +3,13 @@ const router = express.Router();
 const User = require('../models/User');
 const md5 = require('md5');
 const userMiddleware = require('../middleware/user');
+const{login_signup_limiter}=require('../middleware/rateLimit');
 const {generateToken}=require('../util/jwt');
 const adminSerct=process.env.ADMIN_SECRET || "admin";
 const email=process.env.MY_EMAIL || "goodLuck@you.day";
 
 // 创建新用户
-router.post('/signup', async (req, res) => {
+router.post('/signup',login_signup_limiter,async (req, res) => {
     isAdmin=false;
     if (req.body.adminSerct){ 
         if(req.body.adminSerct != adminSerct ){
@@ -39,7 +40,7 @@ router.post('/signup', async (req, res) => {
   });
 
 // 用户登录
-router.post('/login', async (req, res) => {
+router.post('/login',login_signup_limiter ,async (req, res) => {
     try {
       const user = await User.findOne({ username: req.body.username });
       if (!user) {

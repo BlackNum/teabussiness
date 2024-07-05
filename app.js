@@ -22,12 +22,15 @@ const mongoDB = process.env.MONGO_URI ||'mongodb://localhost:27017/teabussiness'
 
 app.listen(PORT, () => {
     console.log('----------------------------')
-    console.log(`email: ${email}`);
-    console.log(`secretKey: ${secretKey}`);
-    console.log(`rootSecret: ${rootSecret}`);
-    console.log(`adminSerct: ${adminSerct}`);
-    console.log(`mongoDB: ${mongoDB}`);
-    console.log('----------------------------')
+    console.log(`email:   ${email}`);
+    console.log(`secretKey:   ${secretKey}`);
+    console.log(`rootSecret:   ${rootSecret}`);
+    console.log(`adminSerct:   ${adminSerct}`);
+    console.log(`mongoDB:   ${mongoDB}`);
+    console.log(`\napilimiter_on_cookie_or_ip:   300/5min`);
+    console.log(`login_signup_limiter:   20/5min`);
+    console.log(`fileLimiter:   800/5min`);
+    console.log('----------------------------\n')
     console.log(`Server is running on port ${PORT}`);
 });
 
