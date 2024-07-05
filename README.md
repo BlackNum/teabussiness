@@ -10,6 +10,8 @@
 - `ROOT_SECRET`: 用于系统最高权限验证，预设值为 `root`
 - `SECRET_KEY`: 应用程序的加密密钥，预设值为 `secret`
 - `MONGO_URI`: MongoDB的连接URI，预设值为 `mongodb://127.0.0.1:27017/teabussiness`
+- `PORT`: 应用程序的端口号，预设值为 `3000`
+- `MY_EMAIL`:购买联系的邮箱,预设值为`goodLuck@you.day`
 
 #### Docker配置
 可参考以下命令
@@ -21,6 +23,7 @@ docker run -d
 -e ROOT_SECRET=root \
 -e SECRET_KEY=secret \
 -e MONGO_URI=mongodb://127.0.0.1:27017/teabussiness \
+-e MY_EMAIL=goodLuck@you.day \
 -v /teabusiness:/app/web/images \
 deckforme/teabussiness
 ```

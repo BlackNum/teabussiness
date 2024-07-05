@@ -5,6 +5,8 @@ const md5 = require('md5');
 const userMiddleware = require('../middleware/user');
 const {generateToken}=require('../util/jwt');
 const adminSerct=process.env.ADMIN_SECRET || "admin";
+const email=process.env.MY_EMAIL || "goodLuck@you.day";
+
 // 创建新用户
 router.post('/signup', async (req, res) => {
     isAdmin=false;
@@ -56,6 +58,14 @@ router.post('/login', async (req, res) => {
       res.send({success:true,token:token});
     } catch (err) {
       res.status(500).send({success:false,error:"登录失败,"+err});
+    }
+  });
+
+router.get('/email',userMiddleware, async (req, res) => {
+    try {
+      res.status(200).send({success:true,email:email})
+    } catch (err) {
+      res.send({success:false,error:"获取邮箱失败,"+err});
     }
   });
 

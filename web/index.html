@@ -183,9 +183,11 @@
   // 批量事件
   util.on('lay-on', {
     alert: function(){
-        layer.alert('购买请联系邮箱:'+" support@yuxiao.cloud",{icon: 6},function(){
+        fetch('/api/user/email').then(res => res.json()).then(data=>{
+            if (data.success){
+                layer.alert('购买请联系邮箱:'+data.email,{icon: 6},function(){
             // 剪贴板放置邮箱
-            navigator.clipboard.writeText('support@yuxiao.cloud').then(function() {
+            navigator.clipboard.writeText(data.email).then(function() {
                 /* clipboard successfully set */
                 layer.msg('邮箱已复制到剪贴板,期待您的联系', {icon: 1});
             }, function() {
@@ -193,7 +195,14 @@
                 // layer.msg('邮箱复制失败', {icon: 2});
                 console.log('邮箱复制失败');
             });
-    })},
+    })
+            }
+            else{
+                layer.msg('获取邮件失败', {icon: 2});
+            }
+        })
+
+},
     confirm: function(){
       layer.confirm('您确定退出登录吗?', {
         btn: ['确定', '关闭'] //按钮
