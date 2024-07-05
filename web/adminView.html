@@ -134,6 +134,8 @@ layer.msg('欢迎使用后台管理系统', {icon: 6, time: 2000});
         fetch('/api/user/logout').then(res => res.json()).then(data=>{
             if (data.success){
                 layer.msg('已退出登录', {icon: 1});
+                localStorage.removeItem('token');
+                localStorage.removeItem('cart');
                 setTimeout(function() {
                 window.location.href = '/login';
             }, 1000)

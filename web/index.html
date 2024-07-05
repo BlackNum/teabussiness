@@ -75,8 +75,8 @@
             padding: 10px 0;
             background-color: #343232;
             /* 下面圆润 */
-            border-bottom-left-radius: 30px;  /* 左下角圆润 */
-    border-bottom-right-radius: 30px; /* 右下角圆润 */
+            border-bottom-left-radius: 30px;  
+    border-bottom-right-radius: 30px; 
         }
         .product-Conatiner {
             width: 20%;           
@@ -93,7 +93,6 @@
             margin: 10px;
         }
         .katou{
-            /* 文本溢出 底部滑动栏 */
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
@@ -106,7 +105,7 @@
         }
         #floating-cart {
     position: fixed;
-    bottom: 40px; /* 位置上移 */
+    bottom: 40px;
     right: 20px;
     z-index: 1000;
 }
@@ -116,8 +115,8 @@
     color: white;
     border: none;
     cursor: pointer;
-    padding: 15px 30px; /* 按钮尺寸增大 */
-    font-size: 18px; /* 字体大小增大 */
+    padding: 15px 30px; 
+    font-size: 18px; 
     border-radius: 30px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     transition: all 0.3s ease;
@@ -218,9 +217,6 @@
             // 退出登录
             document.getElementById('username').innerHTML += '&nbsp;<button type="button" class="layui-btn layui-btn-sm layui-btn-danger"" lay-on="confirm">退出登录</button>';
         } else {
-            // 显示错误信息
-            // 清空cookie
-            document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
             localStorage.removeItem('token');
             window.location.href = '/login';
         }
@@ -238,8 +234,7 @@
     .then(response =>{
         // console.log(response);
         if (response.status != 200) {
-            document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-            localStorage.removeItem('token');
+            layer.msg('获取商品失败', {icon: 2});
             // window.location.href = '/login';
         }
         return response.json()})
@@ -294,6 +289,8 @@
         fetch('/api/user/logout').then(res => res.json()).then(data=>{
             if (data.success){
                 layer.msg('已退出登录', {icon: 1});
+                localStorage.removeItem('token');
+                localStorage.removeItem('cart');
                 setTimeout(function() {
                 window.location.href = '/login';
             }, 1000)
@@ -308,7 +305,7 @@
 function showEmalil(){
     fetch('/api/user/email').then(res => res.json()).then(data=>{
         if (data.success){
-            layer.alert('购买请联系邮箱:'+data.email,{icon: 6},function(){
+            layer.alert('购买请联系邮箱: '+data.email,{icon: 6},function(){
         // 剪贴板放置邮箱
         navigator.clipboard.writeText(data.email).then(function() {
             /* clipboard successfully set */
@@ -384,7 +381,11 @@ function deleteProduct(id) {
                 cartItem.innerHTML+='<button class="layui-btn layui-btn-sm layui-btn-danger" onclick="deleteProduct(\'' + item.id + '\');event.stopPropagation()" >删除</button>';
                 cartContent.appendChild(cartItem);
             });
-            cartContent.innerHTML += '<button class="layui-btn layui-btn" onclick="showEmalil()" style="float: right; border-radius: 12px;">结算</button>';
+            // 总金额
+            var totalPrice = cart.reduce(function(acc, item) {
+                return acc + item.price * item.quantity;
+            }, 0);
+            cartContent.innerHTML += '<div style="display: flex; justify-content: space-between; align-items: center;"><p style="text-align: right; font-weight: bold;color: #E6BE8A;">总金额:'+ totalPrice + '元</p>'+'<button class="layui-btn layui-btn" onclick="showEmalil()" style="float: right; border-radius: 12px;">结算</button></div>';
         }
     } else {
         cartContent.classList.remove('visible');
