@@ -28,8 +28,8 @@ app.listen(PORT, () => {
     console.log(`adminSerct:   ${adminSerct}`);
     console.log(`mongoDB:   ${mongoDB}`);
     console.log(`\napilimiter_on_cookie_or_ip:   300/5min`);
-    console.log(`login_signup_limiter:   20/5min`);
-    console.log(`fileLimiter:   800/5min`);
+    console.log(`login_signup_limiter_on_ip:   20/5min`);
+    console.log(`fileLimiter_on_ip:   800/5min`);
     console.log('----------------------------\n')
     console.log(`Server is running on port ${PORT}`);
 });
