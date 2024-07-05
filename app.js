@@ -21,12 +21,14 @@ const mongoDB = process.env.MONGO_URI ||'mongodb://localhost:27017/teabussiness'
 
 
 app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+    console.log('----------------------------')
     console.log(`email: ${email}`);
     console.log(`secretKey: ${secretKey}`);
     console.log(`rootSecret: ${rootSecret}`);
     console.log(`adminSerct: ${adminSerct}`);
     console.log(`mongoDB: ${mongoDB}`);
+    console.log('----------------------------')
+    console.log(`Server is running on port ${PORT}`);
 });
 
 module.exports = app;
