@@ -17,6 +17,9 @@ router.get('/alluser', async (req, res) => {
     try {
       const users = await User.find({});
       users.forEach(user => user.password="");
+      users.sort((a,b)=>{
+        return b.isAdmin - a.isAdmin;
+      })
       res.status(200).send({success:true,data:users});
     } catch (err) {
       res.status(500).send({success:false,error:err});
