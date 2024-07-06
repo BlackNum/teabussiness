@@ -102,7 +102,13 @@
             border-radius: 10px;
             width: 250px;
             height: 270px;
+            transition: transform 0.3s ease;
         }
+        .productCard:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);  /* 添加阴影效果 */
+    transform: scale(1.05);  /* 轻微放大 */
+}
+
         #floating-cart {
     position: fixed;
     bottom: 90px;
