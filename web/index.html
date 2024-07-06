@@ -307,8 +307,8 @@ function showEmalil(){
     fetch('/api/user/email').then(res => res.json()).then(data=>{
         if (data.success){
             layer.alert('购买请联系邮箱: '+data.email,{icon: 6},function(){
-        // 剪贴板放置邮箱
-        navigator.clipboard.writeText(data.email).then(function() {
+            // 剪贴板放置邮箱
+            navigator.clipboard.writeText(data.email).then(function() {
             /* clipboard successfully set */
             layer.msg('邮箱已复制到剪贴板,期待您的联系', {icon: 1});
         }, function() {
@@ -319,7 +319,7 @@ function showEmalil(){
 })
         }
         else{
-            layer.msg('获取邮件失败', {icon: 2});
+            layer.msg('获取邮箱失败', {icon: 2});
         }
     })
 
