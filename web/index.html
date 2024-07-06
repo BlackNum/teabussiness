@@ -266,6 +266,7 @@
 
             if (product.isOnSale) {
                 productPrice.innerHTML += '<br><button type="button" class="layui-btn layui-btn-sm" onclick="buyProduct(\'' + product._id + '\', \'' + product.productName + '\', ' + product.productPrice + ')">购买</button>';
+                onSale++;
             }
             else {
                 productPrice.innerHTML += '<br>'+'<button class="layui-btn layui-btn-sm layui-btn-disabled">已下架</button>';
