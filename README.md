@@ -1,6 +1,6 @@
 ### 项目配置说明
 
-提供docker部署方式
+提供本地部署和docker部署
 
 #### 环境变量列表
 
@@ -12,6 +12,15 @@
 - `MONGO_URI`: MongoDB的连接URI，预设值为 `mongodb://127.0.0.1:27017/teabussiness`
 - `PORT`: 应用程序的端口号，预设值为 `3000`
 - `MY_EMAIL`:购买联系的邮箱,预设值为`goodLuck@you.day`
+
+#### 本地部署
+```bash
+git clone https://github.com/BlackNum/teabussiness.git 
+cd teabussiness
+npm install
+# 修改.env.example为.env并修改环境变量
+npm run start
+```
 
 #### Docker配置
 可参考以下命令
